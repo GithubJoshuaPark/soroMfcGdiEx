@@ -149,9 +149,14 @@ void CsoroMfcGdiExView::OnPaint()
 		Point(500,10)
 	};
 
+	graphics.SetSmoothingMode(SmoothingModeHighQuality);
 	graphics.DrawCurve(&RPen, pointsForCurve, 6, 0.0f);
 	graphics.DrawCurve(&GPen, pointsForCurve, 6, 0.5f);
 	graphics.DrawCurve(&BPen, pointsForCurve, 6, 1.0f);
 	
+	CRect cRect;
+	GetClientRect(&cRect);
+	BlackPen.SetLineJoin(LineJoinRound);  // 모서리가 둥금
+	graphics.DrawRectangle(&BlackPen, 100, 100, 100,100);
 
 }
