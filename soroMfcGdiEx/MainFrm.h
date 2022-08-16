@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "CDlgForImage.h"
 
 class CMainFrame : public CFrameWnd
 {
@@ -13,7 +14,7 @@ protected: // create from serialization only
 
 // Attributes
 public:
-
+	CDlgForImage m_wndCDlgForImage;
 // Operations
 public:
 
@@ -38,6 +39,8 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 
+public:
+	afx_msg void OnDialogsOpendlg1();
 };
 
 

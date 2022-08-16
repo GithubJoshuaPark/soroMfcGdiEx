@@ -112,12 +112,35 @@ void CsoroMfcGdiExView::OnPaint()
 	// TODO: Add your message handler code here
 	// Do not call CView::OnPaint() for painting messages
 	
+	CRect cRect;
+	GetClientRect(&cRect);
+
+	CString ls_str = _T("");
+	LARGE_INTEGER lnFreq, lnStart, lnEnd, lnResult;
+	::QueryPerformanceFrequency(&lnFreq);
 
 	// GDI+ Graphics °´Ã¼·Î ¼± ±×¸®±â
 	Graphics graphics(dc);  // For Using GDI+
 
-	Pen BluePen(Color(255, 0, 0, 255), 20.0f);
-	Pen BlackPen(Color(128, 0, 0, 0), 20.0f);
+	// ¨Í
+	::QueryPerformanceCounter(&lnStart);
+	Bitmap bitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP1));
+	CachedBitmap cashedbitmap(&bitmap, &graphics);
+	graphics.DrawImage(&bitmap, 0, 0);
+	::QueryPerformanceCounter(&lnEnd);
+
+	lnResult.QuadPart = (lnEnd.QuadPart - lnStart.QuadPart) * 1000000 / lnFreq.QuadPart;
+	ls_str.Format(_T("DrawCashedBitmap() counter: %u"), lnResult.QuadPart);
+
+	dc.SetBkMode(TRANSPARENT);
+	dc.TextOutW(cRect.Width() / 2, 50, ls_str);
+
+	// ¨Î
+	//Image image(_T("res\\dog.bmp"));
+	//graphics.DrawImage(&image, 0, 0);
+
+	Pen BluePen(Gdiplus::Color(255, 0, 0, 255), 20.0f);
+	Pen BlackPen(Gdiplus::Color(128, 0, 0, 0), 20.0f);
 
 	graphics.DrawLine(&BluePen, Point(10, 50), Point(210,50));
 	graphics.DrawLine(&BlackPen, Point(20, 60), Point(220, 60));
@@ -136,10 +159,10 @@ void CsoroMfcGdiExView::OnPaint()
 	graphics.DrawLines(&BluePen, points, 4);
 
 	// GDI+ Graphics °´Ã¼·Î °î¼± ±×¸®±â
-	Pen RPen(Color(255,255,0,0), 2.0f);
-	Pen GPen(Color(255, 0, 255, 0), 2.0f);
-	Pen BPen(Color(255, 0, 0, 255), 2.0f);
-	Pen GrayPen(Color(255,192,192,192), 15.0);
+	Pen RPen(Gdiplus::Color(255,255,0,0), 2.0f);
+	Pen GPen(Gdiplus::Color(255, 0, 255, 0), 2.0f);
+	Pen BPen(Gdiplus::Color(255, 0, 0, 255), 2.0f);
+	Pen GrayPen(Gdiplus::Color(255,192,192,192), 15.0);
 
 	Point pointsForCurve[6] = {
 		Point(100,300),
@@ -155,8 +178,7 @@ void CsoroMfcGdiExView::OnPaint()
 	graphics.DrawCurve(&GPen, pointsForCurve, 6, 0.5f);
 	graphics.DrawCurve(&BPen, pointsForCurve, 6, 1.0f);
 	
-	CRect cRect;
-	GetClientRect(&cRect);
+
 	BlackPen.SetLineJoin(LineJoinRound);  // ¸ð¼­¸®°¡ µÕ±Ý
 	graphics.DrawRectangle(&BlackPen, 100, 100, 100,100);
 
@@ -175,7 +197,7 @@ void CsoroMfcGdiExView::OnPaint()
 		Point(630,80)
 	};
 
-	SolidBrush solidbrush(Color(255,0,0,192));
+	SolidBrush solidbrush(Gdiplus::Color(255,0,0,192));
 	graphics.DrawPolygon(&RPen, points6, 6);
 	graphics.FillPolygon(&solidbrush, points6, 6);
 
@@ -189,8 +211,8 @@ void CsoroMfcGdiExView::OnPaint()
 		{
 			HatchBrush hatchbrush(
 				(HatchStyle)(nStyle + nCounter),
-				Color::DarkRed,
-				Color::Transparent
+				Gdiplus::Color::DarkRed,
+				Gdiplus::Color::Transparent
 				);
 			
 			graphics.FillEllipse(&hatchbrush, x * 50 + 800, y * 50 + 200, 40, 40);
@@ -200,5 +222,17 @@ void CsoroMfcGdiExView::OnPaint()
 			if (nCounter >= HatchStyleMax) break;
 		}
 	}
+
+	// GradientBrush
+	LinearGradientBrush lgBrush(
+		Rect(0,0,100,100),
+		Gdiplus::Color(128,221,236,255),
+		Gdiplus::Color(255, 86, 125, 204),
+		LinearGradientModeForwardDiagonal
+	);
+	dc.TextOutW(25, 525, _T("God will make a way"));
+	graphics.FillRectangle(&lgBrush, 0, 500, 1200, 400);
+
+	// 
 
 }

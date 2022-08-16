@@ -18,6 +18,7 @@ IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
+	ON_COMMAND(ID_DIALOGS_OPENDLG1, &CMainFrame::OnDialogsOpendlg1)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -94,3 +95,10 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 // CMainFrame message handlers
 
+
+
+void CMainFrame::OnDialogsOpendlg1()
+{
+	// TODO: Add your command handler code here
+	m_wndCDlgForImage.DoModal();
+}
