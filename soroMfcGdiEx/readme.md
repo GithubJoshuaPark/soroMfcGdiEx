@@ -1,5 +1,7 @@
 ### GDI+ 사용하기 in the MFC
+
 ---
+
 ```
 (framework.h)
 #include <gdiplus.h>               // For Using GDI+

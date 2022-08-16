@@ -139,6 +139,7 @@ void CsoroMfcGdiExView::OnPaint()
 	Pen RPen(Color(255,255,0,0), 2.0f);
 	Pen GPen(Color(255, 0, 255, 0), 2.0f);
 	Pen BPen(Color(255, 0, 0, 255), 2.0f);
+	Pen GrayPen(Color(255,192,192,192), 15.0);
 
 	Point pointsForCurve[6] = {
 		Point(100,300),
@@ -158,5 +159,46 @@ void CsoroMfcGdiExView::OnPaint()
 	GetClientRect(&cRect);
 	BlackPen.SetLineJoin(LineJoinRound);  // 모서리가 둥금
 	graphics.DrawRectangle(&BlackPen, 100, 100, 100,100);
+
+	// Drawing ARC and Pie 
+	graphics.DrawEllipse(&GrayPen, 500, 200, 200, 200);
+	graphics.DrawArc(&RPen, 500, 200, 200, 200, 0.0f, 90.0f);
+	graphics.DrawPie(&GPen, 500, 200, 200, 200, 180.0f, 90.0f);
+
+	// Drawing Polygon
+	Point points6[6] = {
+		Point(630,30),
+		Point(780,30),
+		Point(780,130),
+		Point(730,130),
+		Point(730,80),
+		Point(630,80)
+	};
+
+	SolidBrush solidbrush(Color(255,0,0,192));
+	graphics.DrawPolygon(&RPen, points6, 6);
+	graphics.FillPolygon(&solidbrush, points6, 6);
+
+	// Using HatchStyle brush
+	int nStyle   = HatchStyleHorizontal;
+	int nCounter = 0;
+
+	for (int y = 0; y < 6; y++)
+	{
+		for (int x = 0; x < 10; x++)
+		{
+			HatchBrush hatchbrush(
+				(HatchStyle)(nStyle + nCounter),
+				Color::DarkRed,
+				Color::Transparent
+				);
+			
+			graphics.FillEllipse(&hatchbrush, x * 50 + 800, y * 50 + 200, 40, 40);
+			graphics.DrawEllipse(&RPen, x * 50 + 800, y * 50 + 200, 40, 40);
+
+			nCounter++;
+			if (nCounter >= HatchStyleMax) break;
+		}
+	}
 
 }
