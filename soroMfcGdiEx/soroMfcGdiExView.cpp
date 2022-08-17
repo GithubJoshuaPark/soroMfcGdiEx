@@ -233,6 +233,13 @@ void CsoroMfcGdiExView::OnPaint()
 	dc.TextOutW(25, 525, _T("God will make a way"));
 	graphics.FillRectangle(&lgBrush, 0, 500, 1200, 400);
 
-	// 
+	// DrawString
+	Gdiplus::Font font(_T("Arial"), 100, FontStyleBold, UnitPixel);
+	PointF ptText(10.0f, 10.0f);
+	HatchBrush brush(HatchStyleSmallCheckerBoard,
+		Color(255, 128, 0, 0),
+		Color::Transparent);
+	
+	graphics.DrawString(_T("Who knows tomorrow?"), -1, &font, ptText, &brush);
 
 }
