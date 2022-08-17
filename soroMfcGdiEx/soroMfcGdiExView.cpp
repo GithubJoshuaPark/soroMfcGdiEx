@@ -269,6 +269,20 @@ void CsoroMfcGdiExView::OnPaint()
 	Gdiplus::Font font2(_T("±¼¸²"), 30, FontStyleItalic, UnitPixel);
 	graphics.DrawString(_T("Rgn2"), -1, &font2, ptText, &sformat, &solidbrush);
 
-	// ÁÂÇ¥°è
+	// ÁÂÇ¥°è (È¸Àü)
+	graphics.DrawRectangle(&GPen, Rect(500,500,150,150));
+	ptText = PointF(550.0f, 550.0f);
+	graphics.DrawString(_T("Before Rotate"), -1, &font2, ptText, &sformat, &solidbrush);
 
+	Matrix transformMatrix;
+	//transformMatrix.Translate(10.0f, 10.0f);
+	transformMatrix.Rotate(10.0f);
+
+	graphics.SetTransform(&transformMatrix);
+	graphics.DrawRectangle(&RPen, Rect(500, 500, 150, 150));
+	graphics.DrawString(_T("After Rotate"), -1, &font2, ptText, &sformat, &solidbrush);
+
+	graphics.RotateTransform(10.0f);
+	graphics.DrawRectangle(&RPen, Rect(500, 500, 150, 150));
+	graphics.DrawString(_T("After2 Rotate"), -1, &font2, ptText, &sformat, &solidbrush);
 }
