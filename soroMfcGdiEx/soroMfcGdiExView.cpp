@@ -240,6 +240,35 @@ void CsoroMfcGdiExView::OnPaint()
 		Color(255, 128, 0, 0),
 		Color::Transparent);
 	
-	graphics.DrawString(_T("Who knows tomorrow?"), -1, &font, ptText, &brush);
+	StringFormat sformat;
+	sformat.SetHotkeyPrefix(HotkeyPrefixShow);
+
+	graphics.DrawString(_T("Who knows &tomorrow?"), -1, &font, ptText, &sformat,&brush);
+
+	// Path
+	GraphicsPath path;
+	path.AddRectangle(Rect(200, 200, 100, 100));
+	path.AddEllipse(Rect(270, 270, 120, 120));
+	FontFamily fontFamily(_T("Arial"));
+	path.AddString(_T("He will make a way for me"), -1, &fontFamily,
+		FontStyleBold, 48, Point(220, 220), NULL);
+	
+	path.SetFillMode(FillModeAlternate);  // ¹ÝÀüÈ¿°ú
+
+	graphics.DrawPath(&BPen, &path);
+	graphics.FillPath(&brush, &path);
+
+	// Region
+	Region Rgn1(Rect(400, 400, 140, 140));
+	Region Rgn2(Rect(450, 450, 140, 140));
+
+	Rgn2.Xor(&Rgn1);
+	graphics.FillRegion(&brush, &Rgn2);
+
+	ptText = PointF(450.0f, 450.0f);
+	Gdiplus::Font font2(_T("±¼¸²"), 30, FontStyleItalic, UnitPixel);
+	graphics.DrawString(_T("Rgn2"), -1, &font2, ptText, &sformat, &solidbrush);
+
+	// ÁÂÇ¥°è
 
 }
